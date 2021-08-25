@@ -1,0 +1,98 @@
+package assignment_6;
+//interface
+interface RoomBillComponent{
+	double TAX=12;
+	double EXTRA_PERSON_CHARGE=500.00;
+	double FOOD_CHARGE=800.00;
+	float calculateBill();
+}
+//class that implements interface
+class RoomDetails implements RoomBillComponent{
+	int billId=1000;
+	String customerName;
+	String typeOfRoom;
+	int noOfExtraPersons;
+	int noOfDaysOfStay;
+	static int counter;
+	//parameterized constrcutor
+	RoomDetails(String customerName,String typeOfRoom,int noOfExtraPersons,int noOfDaysOfStay){
+		this.customerName=customerName;
+		this.typeOfRoom=typeOfRoom;
+		this.noOfExtraPersons=noOfExtraPersons;
+		this.noOfDaysOfStay=noOfDaysOfStay;
+	}
+	//use getter methods
+	int getBillId(){
+		return billId;
+	}
+	String getCustomerName(){
+		return customerName;
+	}
+	int getNoOfExtraPersons(){
+		return noOfExtraPersons; 
+	}
+	int getNoOfDaysOfStay(){
+		return noOfDaysOfStay;
+	}
+	//to validate the no of days of stay & extra persons & type of room
+	boolean validateNoOfDaysOfStay(){
+		if(noOfDaysOfStay>=2 && noOfDaysOfStay<=15 )
+			return true;
+		else{
+			return false;
+		}
+	}
+	boolean validateNoOfExtraPerson(){
+		if(noOfExtraPersons<=2){
+			return true;
+		}
+		else
+			return false;
+	}
+	boolean validateTypeOfRoom(){
+		if(typeOfRoom=="Standard")
+			return true;
+		else if(typeOfRoom=="Deluxe")
+			return true;
+		else if(typeOfRoom=="Cottage")
+			return true;
+		else
+			return false;
+	}
+	//find total bill of this section
+	public float calculateBill(){
+		validateTypeOfRoom();
+		validateNoOfDaysOfStay();
+		validateNoOfExtraPerson();
+		int room_fare = 0;
+		float totalBill = 0;
+		if(typeOfRoom=="Standard")
+			room_fare=2500;
+		else if(typeOfRoom=="Deluxe")
+			room_fare=3500;
+		else if(typeOfRoom=="Cottage")
+			room_fare=5500;
+		if(validateTypeOfRoom()==true && validateNoOfDaysOfStay()==true && validateNoOfExtraPerson()==true ){
+			totalBill=(float) ((noOfDaysOfStay*room_fare)+noOfDaysOfStay *(FOOD_CHARGE)+(EXTRA_PERSON_CHARGE*noOfExtraPersons));
+			totalBill=(float) (totalBill+TAX/100*totalBill);
+		}
+		else 
+			System.out.println("Invalid data");
+		return totalBill;
+	}
+}
+public class Tester {
+
+	public static void main(String[] args) {
+		//create an object of class RoomDetails and provide the values
+		RoomDetails rdone=new RoomDetails("Abi","Deluxe",2,3);
+		//call the calculateBill() method
+		rdone.calculateBill();
+		//display the outputs
+		System.out.println("BillId:"+rdone.getBillId());
+		System.out.println("Customer Name:"+rdone.getCustomerName());
+		System.out.println("No.of days of Stay:"+rdone.getNoOfDaysOfStay());
+		System.out.println("Total Bill:"+rdone.calculateBill());
+	}
+
+}
